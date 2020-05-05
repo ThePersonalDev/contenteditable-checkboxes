@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /**
    * Adds a checkbox element
+   * - Remvoes the [] from the contenteditable
    */
   const createCheckbox = function ({$group, $editable, $checkbox}) {
     const $input = document.createElement('input')
@@ -21,6 +22,8 @@ document.addEventListener('DOMContentLoaded', function () {
     $checkbox.appendChild($input)
 
     $group.classList.add('contenteditable-checkboxes-has-checkbox')
+
+    $editable.textContent = $editable.textContent.substring(3)
   }
 
   /**
