@@ -1,16 +1,33 @@
 document.addEventListener('DOMContentLoaded', function () {
+  /**
+   * Binds listeners to the editor
+   */
+  const bindEditor = function ({$group, $editable, $checkbox}) {
+    console.log($group, $editable, $checkbox)
+  }
+
+  /**
+   * Create the contenteditable group
+   */
   document.querySelectorAll('.contenteditable-checkboxes').forEach($el => {
 
     // Create a wrapping container
-    const $wrap = document.createElement('div')
-    $el.appendChild($wrap)
-    $wrap.classList.add('contenteditable-checkboxes-wrap')
+    const $group = document.createElement('div')
+    $el.appendChild($group)
+    $group.classList.add('contenteditable-checkboxes-group')
 
-    // Create the contenteditable area
+    // Add the checkbox container
+    const $checkbox = document.createElement('div')
+    $checkbox.classList.add('contenteditable-checkboxes-checkbox-wrap')
+    $group.appendChild($checkbox)
+    
+    // Add the contenteditable area
     const $editable = document.createElement('div')
-    $wrap.appendChild($editable)
-    $wrap.classList.add('contenteditable-checkboxes-content')
+    $editable.classList.add('contenteditable-checkboxes-content')
     $editable.setAttribute('contenteditable', true)
+    $group.appendChild($editable)
     $editable.focus()
+
+    bindEditor({$group, $editable, $checkbox})
   })
 })
