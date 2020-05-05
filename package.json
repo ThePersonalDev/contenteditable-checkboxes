@@ -1,0 +1,22 @@
+{
+  "name": "contenteditable-checkboxes",
+  "version": "0.0.1",
+  "description": "Adds the ability to create checkboxes in a contenteditable by simply typing []",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThePersonalDev/contenteditable-checkboxes.git"
+  },
+  "author": "Oz Ramos <thepersonaldev@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ThePersonalDev/contenteditable-checkboxes/issues"
+  },
+  "homepage": "https://github.com/ThePersonalDev/contenteditable-checkboxes#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
