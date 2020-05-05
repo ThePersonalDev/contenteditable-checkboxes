@@ -1,9 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
   /**
    * Binds listeners to the editor
+   * - Listens for a space press, and creates checkbox if it follows []
    */
   const bindEditor = function ({$group, $editable, $checkbox}) {
-    console.log($group, $editable, $checkbox)
+    $editable.addEventListener('keyup', ev => {
+      if (ev.key === ' ' && $editable.textContent.substring(0, 2) == '[]') {
+        createCheckbox({$group, $editable, $checkbox})
+      }
+    })
+  }
+
+  /**
+   * Adds a checkbox element
+   */
+  const createCheckbox = function ({$group, $editable, $checkbox}) {
+    const $input = document.createElement('input')
+    $input.setAttribute('type', 'checkbox')
+    $input.classList.add('contenteditable-checkboxes-checkbox-input')
+    $checkbox.appendChild($input)
   }
 
   /**
