@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
    */
   const bindEditor = function ({$group, $editable, $checkbox}) {
     $editable.addEventListener('keyup', ev => {
-      if (ev.key === ' ' && $editable.textContent.substring(0, 2) == '[]') {
+      if (ev.key === ' ' && $editable.textContent.substring(0, 2) == '[]' && !$group.classList.contains('contenteditable-checkboxes-has-checkbox')) {
         createCheckbox({$group, $editable, $checkbox})
       }
     })
@@ -19,13 +19,14 @@ document.addEventListener('DOMContentLoaded', function () {
     $input.setAttribute('type', 'checkbox')
     $input.classList.add('contenteditable-checkboxes-checkbox-input')
     $checkbox.appendChild($input)
+
+    $group.classList.add('contenteditable-checkboxes-has-checkbox')
   }
 
   /**
    * Create the contenteditable group
    */
   document.querySelectorAll('.contenteditable-checkboxes').forEach($el => {
-
     // Create a wrapping container
     const $group = document.createElement('div')
     $el.appendChild($group)

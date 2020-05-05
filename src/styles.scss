@@ -1,0 +1,18 @@
+$spacer: 10px;
+
+.contenteditable-checkboxes-group {
+  display: flex;
+}
+
+.contenteditable-checkboxes-checkbox-wrap {
+  margin-right: $spacer;
+  display: none;
+}
+
+.contenteditable-checkboxes-content {
+  flex: 1;
+}
+
+.contenteditable-checkboxes-has-checkbox {
+  .contenteditable-checkboxes-checkbox-wrap {display: block}
+}
