@@ -4,8 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contenteditable Checkboxes</title>
+  <link rel="stylesheet" href="node_modules/spectre.css/src/spectre.scss">
 </head>
 <body>
-  <h1>contenteditable Checkboxes</h1>
+  <div class="container" style="margin-top: 100px">
+    <div class="columns">
+      <div class="column col-4 col-mx-auto">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="card-title h5">Content Editable Checkboxes</h1>
+          </div>
+          <div class="card-body">
+            <ol>
+              <li>Type <code>[] </code> with a space to create a checkbox</li>
+              <li>Press <code>Enter</code> to start add a new checkbox</li>
+              <li>Press <code>Enter</code> again to remove the checkbox</li>
+            </ol>
+
+            <div class="card">
+              <div class="card-body">
+                <div class="contenteditable-with-checkboxes"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
