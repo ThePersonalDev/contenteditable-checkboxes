@@ -6,7 +6,7 @@ export default class ContenteditableCheckbox {
       group: document.createElement('div'),
       checkbox: document.createElement('div'),
       editable: document.createElement('div'),
-      input: document.createElement('input')
+      input: null
     }
 
     // Create a wrapping container
@@ -34,13 +34,13 @@ export default class ContenteditableCheckbox {
   bindEditor () {
     this.$.editable.addEventListener('keyup', ev => {
       // Create checkbox
-      if (ev.key === ' ' && this.$.editable.textContent.substring(0, 2) == '[]' && !this.$.group.classList.contains('contenteditable-checkboxes-has-checkbox')) {
+      if (ev.key === ' ' && this.$.editable.textContent.substring(0, 2) == '[]' && !this.$.input) {
         this.createCheckbox()
       }
 
       // Delete checkbox
-      if (ev.key === 'Backspace' && !this.getCaret()) {
-        console.log('delete')
+      if (ev.key === 'Backspace' && this.$.input && !this.getCaret()) {
+        this.deleteCheckbox()
       }
     })
   }
@@ -50,6 +50,7 @@ export default class ContenteditableCheckbox {
    * - Remvoes the [] from the contenteditable
    */
   createCheckbox () {
+    this.$.input = document.createElement('input')
     this.$.input.setAttribute('type', 'checkbox')
     this.$.input.classList.add('contenteditable-checkboxes-checkbox-input')
     this.$.checkbox.appendChild(this.$.input)
@@ -59,6 +60,15 @@ export default class ContenteditableCheckbox {
     this.$.editable.textContent = this.$.editable.textContent.substring(3)
   }
 
+  /**
+   * Deletes the checkbox
+   */
+  deleteCheckbox () {
+    this.$.input.remove()
+    this.$.input = null
+    this.$.group.classList.remove('contenteditable-checkboxes-has-checkbox')
+  }
+  
   /**
    * Gets the caret position within the contenteditable
    * @see https://stackoverflow.com/a/4812022
