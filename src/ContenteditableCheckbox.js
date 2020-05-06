@@ -53,6 +53,7 @@ export default class ContenteditableCheckbox {
           this.deleteCheckbox()
         // Create new row
         } else {
+          this.$.editable.textContent = this.$.editable.textContent.replace(/\n$/, "")
           this.createNewRow()          
         }
       } 
