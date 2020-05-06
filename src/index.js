@@ -6,6 +6,6 @@ window.contenteditableCheckboxInstances = []
  */
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.contenteditable-checkboxes').forEach($el => {
-    window.contenteditableCheckboxInstances.push(new ContenteditableCheckbox($el))
+    new ContenteditableCheckbox($el)
   })
 })

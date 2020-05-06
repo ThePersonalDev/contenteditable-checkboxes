@@ -23,7 +23,10 @@ export default class ContenteditableCheckbox {
     this.$.group.appendChild(this.$.editable)
     this.$.editable.focus()
 
-    this.bindEditor()    
+    this.bindEditor()
+    
+    window.contenteditableCheckboxInstances.push(this)
+    return this
   }
 
     /**
@@ -43,11 +46,16 @@ export default class ContenteditableCheckbox {
         this.deleteCheckbox()
       }
 
-      // Delete checkbox with enter on empty row
-      if (ev.key === 'Enter' && this.$.group.classList.contains('contenteditable-checkboxes-has-checkbox') && this.$.editable.textContent === '') {
-        this.$.editable.textContent = ''
-        this.deleteCheckbox()
-      }
+      if (ev.key === 'Enter' && this.$.group.classList.contains('contenteditable-checkboxes-has-checkbox')) {
+        // Delete checkbox with enter on empty row
+        if (this.$.editable.textContent === '') {
+          this.$.editable.textContent = ''
+          this.deleteCheckbox()
+        // Create new row
+        } else {
+          this.createNewRow()          
+        }
+      } 
     })
   }
 
@@ -64,6 +72,13 @@ export default class ContenteditableCheckbox {
     this.$.group.classList.add('contenteditable-checkboxes-has-checkbox')
 
     this.$.editable.textContent = this.$.editable.textContent.substring(3)
+  }
+
+  /**
+   * Creates a new row with a checkbox
+   */
+  createNewRow () {
+    new ContenteditableCheckbox(this.$.el)
   }
 
   /**
