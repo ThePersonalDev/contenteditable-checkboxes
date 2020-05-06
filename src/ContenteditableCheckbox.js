@@ -34,12 +34,18 @@ export default class ContenteditableCheckbox {
   bindEditor () {
     this.$.editable.addEventListener('keyup', ev => {
       // Create checkbox
-      if (ev.key === ' ' && this.$.editable.textContent.substring(0, 2) == '[]' && !this.$.input) {
+      if (ev.key === ' ' && this.$.editable.textContent.substring(0, 2) === '[]' && !this.$.input) {
         this.createCheckbox()
       }
 
-      // Delete checkbox
+      // Delete checkbox with backsapce
       if (ev.key === 'Backspace' && this.$.input && !this.getCaret()) {
+        this.deleteCheckbox()
+      }
+
+      // Delete checkbox with enter on empty row
+      if (ev.key === 'Enter' && this.$.group.classList.contains('contenteditable-checkboxes-has-checkbox') && this.$.editable.textContent === '') {
+        this.$.editable.textContent = ''
         this.deleteCheckbox()
       }
     })
