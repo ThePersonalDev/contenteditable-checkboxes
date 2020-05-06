@@ -3,6 +3,7 @@ export default class ContenteditableCheckbox {
    * @param {*} $el 
    * @param {*} opts {withCheckbox: true} Creates the editable field with a checkbox already started
    *                 {insertAfter: true} Inserts the row after the specified element instead of inside of it
+   *                 {content: ''} The textContent to include
    */
   constructor ($el, opts = {}) {
     // Elements
@@ -36,6 +37,7 @@ export default class ContenteditableCheckbox {
 
     // Handle options
     if (opts.withCheckbox) this.createCheckbox()
+    if (opts.content) this.$.editable.textContent = opts.content
     
     window.contenteditableCheckboxInstances.push(this)
     return this
@@ -65,8 +67,11 @@ export default class ContenteditableCheckbox {
           this.deleteCheckbox()
         // Create new row
         } else {
-          this.$.editable.textContent = this.$.editable.textContent.replace(/\n$/, "")
-          this.createNewRow()          
+          const caret = this.getCaret()
+          const thisContent = this.$.editable.textContent.substring(0, caret)
+          const nextContent = this.$.editable.textContent.slice(caret)
+          this.$.editable.textContent = thisContent
+          this.createNewRow({content: nextContent})
         }
       } 
     })
@@ -90,10 +95,11 @@ export default class ContenteditableCheckbox {
   /**
    * Creates a new row with a checkbox
    */
-  createNewRow () {
+  createNewRow ({content}) {
     new ContenteditableCheckbox(this.$.group, {
       withCheckbox: true,
-      insertAfter: true
+      insertAfter: true,
+      content
     })
   }
 
