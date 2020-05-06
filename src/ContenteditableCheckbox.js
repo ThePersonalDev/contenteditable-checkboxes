@@ -73,13 +73,10 @@ export default class ContenteditableCheckbox {
       // Delete the checkbox
       if (this.$.input) {
         this.deleteCheckbox()
+      // Delete the row
       } else {
         if (this.$.group.previousSibling) {
-          this.$.group.previousSibling.querySelector('.contenteditable-checkboxes-content').focus()
-          this.deleteRow()
-        } else if (this.$.group.nextSibling) {
-          this.$.group.nextSibling.querySelector('.contenteditable-checkboxes-content').focus()
-          this.deleteRow()
+          this.deleteRow({focus: this.$.group.previousSibling.querySelector('.contenteditable-checkboxes-content')})
         }
       }
     }
@@ -142,8 +139,11 @@ export default class ContenteditableCheckbox {
 
   /**
    * Deletes the current row
+   * @param focus The element to focus
    */
-  deleteRow () {
+  deleteRow ({focus}) {
+    focus.focus()
+    focus.textContent += this.$.editable.textContent
     this.$.group.remove()
   }
 
