@@ -1,5 +1,9 @@
 export default class ContenteditableCheckbox {
-  constructor ($el) {
+  /**
+   * @param {*} $el 
+   * @param {*} opts {withCheckbox: true} Creates the editable field with a checkbox already started
+   */
+  constructor ($el, opts = {}) {
     // Elements
     this.$ = {
       el: $el,
@@ -24,6 +28,9 @@ export default class ContenteditableCheckbox {
     this.$.editable.focus()
 
     this.bindEditor()
+
+    // Handle options
+    if (opts.withCheckbox) this.createCheckbox()
     
     window.contenteditableCheckboxInstances.push(this)
     return this
@@ -79,7 +86,7 @@ export default class ContenteditableCheckbox {
    * Creates a new row with a checkbox
    */
   createNewRow () {
-    new ContenteditableCheckbox(this.$.el)
+    new ContenteditableCheckbox(this.$.el, {withCheckbox: true})
   }
 
   /**
