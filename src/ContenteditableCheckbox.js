@@ -6,6 +6,8 @@ export default class ContenteditableCheckbox {
    *                 {content: ''} The textContent to include
    */
   constructor ($el, opts = {}) {
+    this.isDeleted = false
+    
     // Elements
     this.$ = {
       el: $el,
@@ -45,38 +47,64 @@ export default class ContenteditableCheckbox {
 
     /**
    * Binds listeners to the editor
-   * - Listens for a space press, and creates checkbox if it follows []
-   * - Updates last value, if user backspaces and values are same then we know they backspaced from index 0
    */
   bindEditor () {
     this.$.editable.addEventListener('keyup', ev => {
-      // Create checkbox
-      if (ev.key === ' ' && this.$.editable.textContent.substring(0, 2) === '[]' && !this.$.input) {
-        this.createCheckbox()
-      }
-
-      // Delete checkbox with backsapce
-      if (ev.key === 'Backspace' && this.$.input && !this.getCaret()) {
-        this.deleteCheckbox()
-      }
-
-      if (ev.key === 'Enter' && this.$.group.classList.contains('contenteditable-checkboxes-has-checkbox')) {
-        // Delete checkbox with enter on empty row
-        if (this.$.editable.textContent === '') {
-          this.$.editable.textContent = ''
-          this.deleteCheckbox()
-        // Create new row
-        } else {
-          const caret = this.getCaret()
-          const thisContent = this.$.editable.textContent.substring(0, caret)
-          const nextContent = this.$.editable.textContent.slice(caret)
-          this.$.editable.textContent = thisContent
-          this.createNewRow({content: nextContent})
-        }
-      } 
+      this.handleSpace(ev)
+      this.handleBackspace(ev)
+      this.handleEnter(ev)
     })
   }
 
+  /**
+   * Create a checkbox if [] is typed
+   */
+  handleSpace (ev) {
+    if (ev.key === ' ' && this.$.editable.textContent.substring(0, 2) === '[]' && !this.$.input) {
+      this.createCheckbox()
+    }
+  }
+
+  /**
+   * Either delete the checkbox or delete the row
+   */
+  handleBackspace (ev) {
+    if (ev.key === 'Backspace' && !this.getCaret()) {
+      // Delete the checkbox
+      if (this.$.input) {
+        this.deleteCheckbox()
+      } else {
+        if (this.$.group.previousSibling) {
+          this.$.group.previousSibling.querySelector('.contenteditable-checkboxes-content').focus()
+          this.deleteRow()
+        } else if (this.$.group.nextSibling) {
+          this.$.group.nextSibling.querySelector('.contenteditable-checkboxes-content').focus()
+          this.deleteRow()
+        }
+      }
+    }
+  }
+  
+  /**
+   * Either create a new row or delete the current row if it's empty with a checkbox
+   */
+  handleEnter (ev) {
+    if (ev.key === 'Enter' && this.$.input) {
+      // Delete checkbox with enter on empty row
+      if (this.$.editable.textContent === '') {
+        this.$.editable.textContent = ''
+        this.deleteCheckbox()
+      // Create new row
+      } else {
+        const caret = this.getCaret()
+        const thisContent = this.$.editable.textContent.substring(0, caret)
+        const nextContent = this.$.editable.textContent.slice(caret)
+        this.$.editable.textContent = thisContent
+        this.createNewRow({content: nextContent})
+      }
+    } 
+  }
+  
   /**
    * Adds a checkbox element
    * - Remvoes the [] from the contenteditable
@@ -111,7 +139,14 @@ export default class ContenteditableCheckbox {
     this.$.input = null
     this.$.group.classList.remove('contenteditable-checkboxes-has-checkbox')
   }
-  
+
+  /**
+   * Deletes the current row
+   */
+  deleteRow () {
+    this.$.group.remove()
+  }
+
   /**
    * Gets the caret position within the contenteditable
    * @see https://stackoverflow.com/a/4812022
