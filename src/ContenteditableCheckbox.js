@@ -53,6 +53,7 @@ export default class ContenteditableCheckbox {
       this.handleSpace(ev)
       this.handleBackspace(ev)
       this.handleEnter(ev)
+      this.handleArrows(ev)
     })
   }
 
@@ -100,6 +101,18 @@ export default class ContenteditableCheckbox {
         this.createNewRow({content: nextContent})
       }
     } 
+  }
+
+  /**
+   * Select the selector above or below
+   */
+  handleArrows (ev) {
+    if (ev.key === 'ArrowUp' && this.$.group.previousSibling) {
+      this.$.group.previousSibling.querySelector('.contenteditable-checkboxes-content').focus()
+    }
+    if (ev.key === 'ArrowDown' && this.$.group.nextSibling) {
+      this.$.group.nextSibling.querySelector('.contenteditable-checkboxes-content').focus()
+    }
   }
   
   /**
