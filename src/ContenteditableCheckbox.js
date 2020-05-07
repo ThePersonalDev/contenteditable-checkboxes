@@ -142,8 +142,9 @@ export default class ContenteditableCheckbox {
    * @param focus The element to focus
    */
   deleteRow ({focus}) {
-    focus.focus()
+    const focusLenth = focus.textContent.length
     focus.textContent += this.$.editable.textContent
+    this.setCaret(focusLenth, focus)
     this.$.group.remove()
   }
 
@@ -175,5 +176,26 @@ export default class ContenteditableCheckbox {
     }
     
     return caretOffset
+  }
+
+  /**
+   * Set caret at given index
+   * @see https://stackoverflow.com/a/6249440
+   * 
+   * @param index The position to set the caret to
+   * @param target (Optional) The target element to set it to (defaults to current contenteditable)
+   */
+  setCaret (index, target) {
+    if (!target) target = this.$.editable
+
+    let range = document.createRange()
+    let sel = window.getSelection()
+
+    range.setStart(target.childNodes[0], index)
+    range.collapse()
+    sel.removeAllRanges()
+    sel.addRange(range)
+
+    target.focus()
   }
 }
