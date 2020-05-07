@@ -45,7 +45,7 @@ export default class ContenteditableCheckbox {
     return this
   }
 
-    /**
+  /**
    * Binds listeners to the editor
    */
   bindEditor () {
@@ -104,14 +104,32 @@ export default class ContenteditableCheckbox {
   }
 
   /**
-   * Select the selector above or below
+   * - Use arrows to select row above or below
+   * - Use CTRL to shift row above or below
+   * - Updates lastCaret
    */
   handleArrows (ev) {
-    if (ev.key === 'ArrowUp' && this.$.group.previousSibling) {
-      this.$.group.previousSibling.querySelector('.contenteditable-checkboxes-content').focus()
+    if (ev.ctrlKey) {
+      if (ev.key === 'ArrowUp' && this.$.group.previousSibling) {
+        this.$.group.previousSibling.before(this.$.group)
+        this.setCaret(this.lastCaret)
+      }
+      if (ev.key === 'ArrowDown' && this.$.group.nextSibling) {
+        this.$.group.nextSibling.after(this.$.group)
+        this.setCaret(this.lastCaret)
+      }
+    } else {
+      if (ev.key === 'ArrowUp' && this.$.group.previousSibling) {
+        this.$.group.previousSibling.querySelector('.contenteditable-checkboxes-content').focus()
+      }
+      if (ev.key === 'ArrowDown' && this.$.group.nextSibling) {
+        this.$.group.nextSibling.querySelector('.contenteditable-checkboxes-content').focus()
+      }
     }
-    if (ev.key === 'ArrowDown' && this.$.group.nextSibling) {
-      this.$.group.nextSibling.querySelector('.contenteditable-checkboxes-content').focus()
+
+    // Update caret
+    if (ev.key !== 'ArrowUp' && ev.key !== 'ArrowDown') {
+      this.lastCaret = this.getCaret()
     }
   }
   
@@ -157,8 +175,11 @@ export default class ContenteditableCheckbox {
   deleteRow ({focus}) {
     const focusLenth = focus.textContent.length
     focus.textContent += this.$.editable.textContent
+    
     this.setCaret(focusLenth, focus)
     this.$.group.remove()
+
+    this.isDeleted = true
   }
 
   /**
